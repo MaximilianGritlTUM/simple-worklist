@@ -1,0 +1,17 @@
+{
+  "name": "simple-worklist",
+  "version": "1.0.0",
+  "description": "A simple worklist for CPEE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "maximilian.gritl@tum.de",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3",
+    "express-xml-bodyparser": "^0.3.0",
+    "fast-xml-parser": "^4.3.6",
+    "xml2json": "^0.12.0"
+  }
+}
