@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="js_libs/jquery-3.7.1.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Worklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        .username-input {
+            flex: 1; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            vertical-align: middle; 
+        }
+
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .task-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tasks-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .task-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simple Worklist</h1>
+    <form>
+        <input type="text" class="username-input" id="username" name="username" placeholder="Enter Username">
+    </form>
+    <h2 class="tasks-title">Tasks</h2>
+    <ul class="task-list">
+    </ul>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById("username").value = urlParams.get("username");
+    $.get("http://localhost:3000/tasks/"+urlParams.get("username"), function(data) {
+        if (data) {
+            console.log(data)
+            $('<li class="task-item"><b>'+data["activity"]+' ('+data['instance']+'):</b>'+data['label']+ '<button id = "do_work" class="task-btn">Do work!</button></li>').appendTo($(document.getElementsByClassName("task-list"))[0]);
+            $("#do_work").click(function() {
+                $.ajax({
+                    url: "http://localhost:3000/tasks/"+urlParams.get("username"),
+                    type: 'DELETE',
+                    success: function(result) {
+                        location.reload();
+                    }
+                });
+            });
+        } else {
+            $('<li class="task-item">No tasks for this user!</li>').appendTo($(document.getElementsByClassName("task-list"))[0]);
+        }
+    });
+</script>
+
+</body>
+</html>
